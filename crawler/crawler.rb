@@ -6,7 +6,7 @@ URL = "https://nekdo.ru/"
 SPIDER = Arachnid2.new(URL)
 MAX_URLS = 100
 OPTIONS = { max_urls: MAX_URLS }
-DOCS_DIR = "results"
+DOCS_DIR = "docs"
 
 responses = []
 

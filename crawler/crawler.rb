@@ -5,13 +5,11 @@ require "arachnid2"
 URL = "https://nekdo.ru/"
 SPIDER = Arachnid2.new(URL)
 MAX_URLS = 100
-OPTIONS = { max_urls: MAX_URLS }
-DOCS_DIR = "docs"
-
-responses = []
+DOCS_DIR = "docs/raw/"
 
 # documents crawling
-SPIDER.crawl(OPTIONS) { |response| responses << response }
+responses = []
+SPIDER.crawl(max_urls: MAX_URLS) { |response| responses << response }
 
 # documents links storing
 links = responses.map(&:effective_url)
@@ -25,5 +23,5 @@ responses.each.with_index(1) do |response, index|
   doc = Nokogiri::HTML(response.body)
   doc.search("//style|//script").remove
 
-  File.open("#{DOCS_DIR}/#{index}.txt", "w") { |f| f.puts doc.content }
+  File.open("#{DOCS_DIR}#{index}.txt", "w") { |f| f.puts doc.content }
 end

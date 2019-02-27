@@ -6,8 +6,6 @@ import sys
 INDEX_FILE = "indexation/reversed_index.txt"
 DOCS_LINKS_FILE = "index.txt"
 
-doc_links = None
-
 with open(DOCS_LINKS_FILE, "r") as file:
     doc_links = file.read().split()
 
@@ -17,28 +15,24 @@ args = parser.parse_args()
 
 morph = MorphAnalyzer()
 
-index = {}
-
-with open(INDEX_FILE) as file:
-    rows = file.readlines()
-    for row in rows:
-        token_presences = row.split("\t")
-        token = token_presences[0]
-        presences = token_presences[1]
-        index[token] = [True if x == "1" else False
-                        for x in presences.split(" ")]
-
 keywords = args.query.strip().split()
 normalized_keywords = [morph.parse(keyword)[0].normal_form
                        for keyword in keywords]
 
+index = {}
+
+with open(INDEX_FILE) as file:
+    for line in file.readlines():
+        token, presences = line.split("\t")
+        index[token] = [x == "1" for x in presences.split(" ")]
+
 keywords_presences = []
 
-for kw in normalized_keywords:
-    if not index.get(kw, None):
+for keyword in normalized_keywords:
+    if keyword not in index:
         sys.exit("No results")
 
-    keywords_presences.append(index[kw])
+    keywords_presences.append(index[keyword])
 
 bitwised_presences = keywords_presences[0]
 

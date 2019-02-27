@@ -15,7 +15,5 @@ for filename in os.listdir(RAW_DOCS_PATH):
         tokens = tokenizer.tokenize(file.read())
         lemmas = [morph.parse(token)[0].normal_form for token in tokens]
 
-        normalized_doc_file_path = NORMALIZED_DOCS_PATH + filename
-
-        with open(normalized_doc_file_path, "w") as f:
-            f.write("\t".join(lemmas))
+    with open(NORMALIZED_DOCS_PATH + filename, "w") as f:
+        f.write("\t".join(lemmas))

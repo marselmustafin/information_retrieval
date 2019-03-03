@@ -21,16 +21,16 @@ for filename in docs_list:
                 token, [0] * len(docs_list))[doc_index] += 1
 
 # Sums of words for each doc
-docs_words_sums = np.sum(list(token_appearings.values()), axis=0)
+docs_tokens_sums = np.sum(list(token_appearings.values()), axis=0)
 
 index = {}
 
-for word in token_appearings.keys():
+for token in token_appearings.keys():
     for doc_index in range(len(docs_list)):
-        tf = token_appearings[word][doc_index] / docs_words_sums[doc_index]
-        idf = len(docs_list) / np.count_nonzero(token_appearings[word])
+        tf = token_appearings[token][doc_index] / docs_tokens_sums[doc_index]
+        idf = len(docs_list) / np.count_nonzero(token_appearings[token])
 
-        index.setdefault(word, [0] * len(docs_list))[doc_index] = tf * idf
+        index.setdefault(token, [0] * len(docs_list))[doc_index] = tf * idf
 
 with open(INDEX_PATH + INDEX_FILE_NAME, "w") as result_file:
     for token, tfidfs in index.items():

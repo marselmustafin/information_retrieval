@@ -12,15 +12,12 @@ index = {}
 
 for filename in docs_list:
     with open(NORMALIZED_DOCS_PATH + filename, "r") as file:
-        doc_num = int(filename.split(".")[0])
+        doc_index = int(filename.split(".")[0]) - 1
         tokens = file.read().split("\t")
         for token in tokens:
-            if token not in index:
-                index[token] = ["0"] * len(docs_list)
-
-            index[token][doc_num - 1] = "1"
+            index[token].setdefault(["0"] * len(docs_list))[doc_index] = "1"
 
 with open(INDEX_PATH + INDEX_FILE_NAME, "w") as result_file:
-    for token in index.keys():
-        index_row = token + "\t" + " ".join(index[token]) + "\n"
+    for token, appearings in index.keys():
+        index_row = token + "\t" + " ".join(appearings) + "\n"
         result_file.write(index_row)

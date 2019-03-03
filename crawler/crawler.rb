@@ -9,7 +9,12 @@ DOCS_DIR = "docs/raw/"
 
 # documents crawling
 responses = []
+
+puts "Start crawling..."
+
 SPIDER.crawl(max_urls: MAX_URLS) { |response| responses << response }
+
+puts "#{responses.size} docs crawled. Docs directory: #{DOCS_DIR}"
 
 # documents links storing
 links = responses.map(&:effective_url)
@@ -20,8 +25,14 @@ Dir.mkdir DOCS_DIR unless File.exist? DOCS_DIR
 
 # docs content retrieving and storing
 responses.each.with_index(1) do |response, index|
-  doc = Nokogiri::HTML(response.body)
-  doc.search("//style|//script").remove
+  html_doc = Nokogiri::HTML(response.body)
+  html_doc.search("//style|//script").remove
 
-  File.open("#{DOCS_DIR}#{index}.txt", "w") { |f| f.puts doc.content }
+  inner_contents = html_doc.xpath("//text()").map do |content|
+    content.text.scan(/[a-zа-я]+/i)
+  end
+
+  File.open("#{DOCS_DIR}#{index}.txt", "w") do |f|
+    f.puts inner_contents.reject(&:empty?).join(" ")
+  end
 end

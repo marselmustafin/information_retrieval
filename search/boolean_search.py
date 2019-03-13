@@ -39,5 +39,8 @@ bitwised_presences = keywords_presences[0]
 if len(keywords_presences) > 1:
     bitwised_presences = np.bitwise_and.reduce(keywords_presences)
 
+if not any(bitwised_presences):
+    sys.exit("No results")
+
 for doc_index, bitwised_value in enumerate(bitwised_presences):
     print(doc_links[doc_index + 1]) if bitwised_value else next

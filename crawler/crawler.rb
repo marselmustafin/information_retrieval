@@ -33,6 +33,6 @@ responses.each.with_index(1) do |response, index|
   end
 
   File.open("#{DOCS_DIR}#{index}.txt", "w") do |f|
-    f.puts inner_contents.reject(&:empty?).join(" ")
+    f.puts inner_contents.reject(&:empty?).join(" ").strip
   end
 end

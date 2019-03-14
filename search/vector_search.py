@@ -48,7 +48,7 @@ for doc_vec in t_index:
     doc_vec_norm = sqrt(sum([comp**2 for comp in doc_vec]))
     for token in set(normalized_keywords):
         if token not in vocab:
-            next
+            continue
 
         token_vocab_index = vocab.index(token)
         token_tfdif = keywords_counts[token] / len(keywords) * idfs[token]

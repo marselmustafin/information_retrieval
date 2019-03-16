@@ -62,5 +62,5 @@ for doc_vec in t_index:
 sorted_links = \
     sorted(zip(doc_links, similarities), key=lambda p: p[1], reverse=True)
 
-for result, similarity_coef in sorted_links[0:TOP_RESULTS_NUM]:
+for result, similarity_coef in sorted_links[:TOP_RESULTS_NUM]:
     print(result + " " + str(similarity_coef) + "\n")

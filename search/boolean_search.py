@@ -43,4 +43,5 @@ if not any(bitwised_presences):
     sys.exit("No results")
 
 for doc_index, bitwised_value in enumerate(bitwised_presences):
-    print(doc_links[doc_index + 1]) if bitwised_value else next
+    if bitwised_value:
+        print(doc_links[doc_index + 1])
